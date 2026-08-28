@@ -1,0 +1,227 @@
+.item {
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.item:first-child {
+  border-top: none;
+}
+
+.toggle {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3);
+  text-align: left;
+  color: inherit;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-border-subtle);
+  color: var(--color-fg-muted);
+}
+
+.icon[data-kind='gym'] {
+  color: #8a6b2f;
+  background: color-mix(in srgb, #c4a35a 22%, transparent);
+}
+
+.icon[data-kind='running'] {
+  color: #a8521f;
+  background: color-mix(in srgb, #e07030 22%, transparent);
+}
+
+.icon[data-kind='cycling'] {
+  color: #15707c;
+  background: color-mix(in srgb, #1f9aaa 22%, transparent);
+}
+
+.icon[data-kind='swimming'] {
+  color: #2a5285;
+  background: color-mix(in srgb, #3b6fb0 22%, transparent);
+}
+
+.icon[data-kind='hiking'] {
+  color: #63582a;
+  background: color-mix(in srgb, #8a7a3a 22%, transparent);
+}
+
+.icon[data-kind='soccer'] {
+  color: #433890;
+  background: color-mix(in srgb, #5c4db8 22%, transparent);
+}
+
+.icon[data-kind='bouldering'] {
+  color: #73402c;
+  background: color-mix(in srgb, #a05a3c 22%, transparent);
+}
+
+.icon[data-kind='sauna'] {
+  color: #8f2b50;
+  background: color-mix(in srgb, #c23d6e 22%, transparent);
+}
+
+.icon[data-kind='cold_plunge'] {
+  color: #2d5a75;
+  background: color-mix(in srgb, #3d7a9e 22%, transparent);
+}
+
+.icon[data-kind='contrast'] {
+  color: #7a3558;
+  background: color-mix(in srgb, #c23d6e 18%, transparent);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-fg);
+}
+
+.titleText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prMark {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.15rem;
+  color: #8a6b2f;
+}
+
+.prMark span {
+  font-size: 0.68rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--text-xs);
+  color: var(--color-fg-subtle);
+}
+
+.dot {
+  color: var(--color-fg-subtle);
+}
+
+.zone {
+  font-weight: 700;
+}
+
+.zone[data-zone='1'] {
+  color: var(--hrz-1-ink);
+}
+
+.zone[data-zone='2'] {
+  color: var(--hrz-2-ink);
+}
+
+.zone[data-zone='3'] {
+  color: var(--hrz-3-ink);
+}
+
+.zone[data-zone='4'] {
+  color: var(--hrz-4-ink);
+}
+
+.zone[data-zone='5'] {
+  color: var(--hrz-5-ink);
+}
+
+.metrics {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.metrics strong {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-fg);
+}
+
+.metrics span {
+  font-size: var(--text-xs);
+  color: var(--color-fg-subtle);
+}
+
+.chevron {
+  color: var(--color-fg-subtle);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.open .chevron {
+  transform: rotate(180deg);
+}
+
+.chevronSpacer {
+  width: 16px;
+  height: 16px;
+}
+
+.static .toggle {
+  cursor: default;
+}
+
+@media (max-width: 860px) {
+  .toggle {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'icon body chevron'
+      'icon metrics chevron';
+    column-gap: var(--space-3);
+    row-gap: 0.15rem;
+    align-items: start;
+  }
+
+  .icon {
+    grid-area: icon;
+    align-self: center;
+  }
+
+  .body {
+    grid-area: body;
+  }
+
+  .metrics {
+    grid-area: metrics;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 0.35rem;
+  }
+
+  .chevron,
+  .chevronSpacer {
+    grid-area: chevron;
+    align-self: center;
+  }
+}

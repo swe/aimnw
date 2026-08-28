@@ -1,0 +1,71 @@
+.button {
+  display: inline-grid;
+  place-items: center;
+  width: var(--icon-button-size);
+  height: var(--icon-button-size);
+  margin: 0;
+  padding: 0;
+  border-radius: 999px;
+  color: var(--color-fg-muted);
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.ghost {
+  border: 0;
+  background: transparent;
+}
+
+.ghost:hover,
+.ghost:focus-visible {
+  color: var(--color-fg);
+  background: var(--color-skeleton-base);
+  outline: none;
+}
+
+.bordered {
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-surface-raised);
+}
+
+.bordered:hover,
+.bordered:focus-visible {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-color: color-mix(in srgb, var(--color-accent) 28%, var(--color-border-subtle));
+  outline: none;
+}
+
+.active {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.onDark {
+  color: rgb(243 244 243 / 0.58);
+}
+
+.onDark:hover,
+.onDark:focus-visible,
+.onDark.ghost:hover,
+.onDark.ghost:focus-visible {
+  color: rgb(243 244 243 / 0.96);
+  background: rgb(243 244 243 / 0.1);
+  outline: none;
+}
+
+.onDark.active,
+.onDark.active:hover,
+.onDark.active:focus-visible {
+  color: rgb(243 244 243 / 0.96);
+  background: rgb(243 244 243 / 0.16);
+}
+
+.onDark.active,
+.onDark.active:hover,
+.onDark.active:focus-visible {
+  color: rgb(243 244 243 / 0.96);
+  background: rgb(243 244 243 / 0.16);
+}

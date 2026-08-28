@@ -1,0 +1,114 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--space-6) var(--space-5);
+}
+
+.covers {
+  grid-template-columns: repeat(auto-fill, minmax(5.25rem, 1fr));
+  gap: var(--space-3);
+}
+
+.gallery {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+@media (min-width: 720px) {
+  .covers {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .covers {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (min-width: 40rem) {
+  .gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 56rem) {
+  .gallery {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-4);
+}
+
+.mute {
+  gap: 0;
+}
+
+.media {
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  background: var(--color-skeleton-base);
+}
+
+.mediaEmpty {
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.book.mediaEmpty {
+  border: 1px solid rgb(42 46 52 / 0.18);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.55),
+    0 6px 16px rgb(40 44 50 / 0.2);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-inline: var(--space-1);
+}
+
+.square {
+  aspect-ratio: 1;
+}
+
+.book {
+  aspect-ratio: 2 / 3;
+  border: 1px solid rgb(42 46 52 / 0.18);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.55),
+    0 6px 16px rgb(40 44 50 / 0.2);
+}
+
+.mediaFallback {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--color-fg-subtle);
+}
+
+.summary {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-fg-muted);
+  line-height: var(--leading-relaxed);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}

@@ -1,0 +1,41 @@
+.link {
+  position: relative;
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  color: var(--color-fg);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.link:hover {
+  color: var(--color-accent);
+}
+
+.label {
+  white-space: nowrap;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 0.2em);
+  width: 0.85rem;
+  height: 0.85rem;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.link:hover .icon,
+.link:focus-visible .icon {
+  opacity: 1;
+}
+
+@media (max-width: 860px) {
+  .icon {
+    display: none;
+  }
+}

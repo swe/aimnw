@@ -1,0 +1,33 @@
+.rating {
+  display: inline-flex;
+  gap: 0.15rem;
+  letter-spacing: 0.02em;
+  font-size: var(--text-xs);
+  line-height: 1;
+}
+
+.stars {
+  gap: 0.05rem;
+  font-size: var(--text-xs);
+}
+
+.md {
+  font-size: var(--text-md);
+  gap: 0.08rem;
+}
+
+.stars .on {
+  color: #8a6b4a;
+}
+
+.stars .off {
+  color: var(--color-fg-subtle);
+}
+
+.on {
+  color: var(--color-accent);
+}
+
+.off {
+  color: var(--color-border);
+}

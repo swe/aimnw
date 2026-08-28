@@ -1,0 +1,101 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.tile[data-empty='true'] {
+  opacity: 0.72;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-fg-muted);
+}
+
+.trend {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.trend[data-tone='good'] {
+  color: var(--color-positive);
+}
+
+.trend[data-tone='bad'] {
+  color: var(--color-negative);
+}
+
+.trend[data-tone='flat'] {
+  color: var(--color-fg-muted);
+}
+
+.spark {
+  width: 100%;
+  height: 4rem;
+  display: block;
+  overflow: visible;
+}
+
+.emptySpark {
+  width: 100%;
+  height: 4rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    180deg,
+    transparent 48%,
+    color-mix(in srgb, var(--color-border) 70%, transparent) 49%,
+    color-mix(in srgb, var(--color-border) 70%, transparent) 51%,
+    transparent 52%
+  );
+}
+
+.spark[data-tone='good'] {
+  color: var(--color-positive);
+}
+
+.spark[data-tone='bad'] {
+  color: var(--color-negative);
+}
+
+.spark[data-tone='flat'] {
+  color: var(--color-accent);
+}
+
+.area {
+  fill: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.line {
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

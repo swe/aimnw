@@ -1,0 +1,28 @@
+.columns {
+  column-count: 1;
+  column-gap: var(--space-6);
+}
+
+.category {
+  break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.footer {
+  margin: 0;
+  max-width: 38rem;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+  font-size: var(--text-sm);
+  color: var(--color-fg-subtle);
+  line-height: var(--leading-relaxed);
+}
+
+@media (min-width: 720px) {
+  .columns {
+    column-count: 2;
+  }
+}

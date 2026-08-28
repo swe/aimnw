@@ -1,0 +1,72 @@
+.fill[data-zone='1'],
+.swatch[data-zone='1'] {
+  background: var(--hrz-1);
+}
+
+.fill[data-zone='2'],
+.swatch[data-zone='2'] {
+  background: var(--hrz-2);
+}
+
+.fill[data-zone='3'],
+.swatch[data-zone='3'] {
+  background: var(--hrz-3);
+}
+
+.fill[data-zone='4'],
+.swatch[data-zone='4'] {
+  background: var(--hrz-4);
+}
+
+.fill[data-zone='5'],
+.swatch[data-zone='5'] {
+  background: var(--hrz-5);
+}
+
+.ink[data-zone='1'] {
+  color: var(--hrz-1-ink);
+}
+
+.ink[data-zone='2'] {
+  color: var(--hrz-2-ink);
+}
+
+.ink[data-zone='3'] {
+  color: var(--hrz-3-ink);
+}
+
+.ink[data-zone='4'] {
+  color: var(--hrz-4-ink);
+}
+
+.ink[data-zone='5'] {
+  color: var(--hrz-5-ink);
+}
+
+.swatch {
+  display: block;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin: 0;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-fg);
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.item strong {
+  font-weight: 700;
+}

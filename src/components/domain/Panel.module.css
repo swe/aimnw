@@ -1,0 +1,118 @@
+.panel {
+  min-width: 0;
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  overflow: visible;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+@media (max-width: 860px) {
+  .panel {
+    padding: var(--space-4);
+  }
+
+  .header {
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+  }
+}
+
+.title {
+  margin: 0;
+}
+
+.headerEnd {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.hint {
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.hintTrigger {
+  display: inline-grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-fg-subtle);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: 1;
+  cursor: help;
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.hintTrigger:hover,
+.hintTrigger:focus-visible {
+  color: var(--color-fg);
+  border-color: var(--color-fg-muted);
+  background: var(--color-accent-soft);
+}
+
+.hintPanel {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  right: 0;
+  z-index: 5;
+  width: max-content;
+  max-width: min(16rem, calc(100vw - 2rem));
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  color: var(--color-fg-muted);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: var(--leading-relaxed);
+  text-transform: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    visibility var(--duration-fast) var(--ease-out);
+}
+
+.hintPanel::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  height: 0.45rem;
+}
+
+.hint:hover .hintPanel,
+.hint:focus-within .hintPanel {
+  opacity: 1;
+  visibility: visible;
+}
+
+.body {
+  min-width: 0;
+  color: var(--color-fg-muted);
+}

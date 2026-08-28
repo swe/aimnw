@@ -1,0 +1,51 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--space-6) var(--space-5);
+}
+
+.card {
+  padding: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  border: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+  border-radius: 0;
+  background: transparent;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.sport {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.sportRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.sportRowFour {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.map {
+  padding-top: var(--space-2);
+}
+
+@media (max-width: 720px) {
+  .sportRow,
+  .sportRowFour {
+    grid-template-columns: 1fr;
+  }
+}

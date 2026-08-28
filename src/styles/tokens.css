@@ -1,0 +1,85 @@
+:root {
+  /* Japandi: soft neutrals, quiet contrast — no pure white/black, no earthy tones */
+  --color-canvas: #f7f7f6;
+  --color-surface: #fafafa;
+  --color-surface-raised: #fcfcfc;
+  --color-overlay: rgb(48 52 58 / 0.36);
+
+  --color-fg: #1b1e23;
+  --color-fg-muted: #3e4550;
+  --color-fg-subtle: #5c6570;
+
+  --color-border: #d5dae0;
+  --color-border-subtle: #e2e6eb;
+
+  --color-accent: #256eb8;
+  --color-accent-soft: #e3eef8;
+  --color-accent-hover: #1e5a96;
+  --color-on-solid: #f7f8f7;
+
+  --color-positive: #2f6b45;
+  --color-negative: #8a3d52;
+  --color-caution: #9a7b4a;
+  --color-favorite: #8a5a2f;
+
+  --hrz-1: #4ea3e6;
+  --hrz-2: #2bb56f;
+  --hrz-3: #f0c01e;
+  --hrz-4: #f06d2c;
+  --hrz-5: #e44552;
+  --hrz-1-ink: #2b7cb5;
+  --hrz-2-ink: #1a8a54;
+  --hrz-3-ink: #a67c08;
+  --hrz-4-ink: #c45418;
+  --hrz-5-ink: #c43340;
+
+  --color-skeleton-base: #e1e5ea;
+  --color-skeleton-shine: #f1f3f5;
+  --color-code-bg: #eceeef;
+
+  --font-display: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.3125rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.125rem;
+
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-relaxed: 1.7;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2.25rem;
+  --space-7: 3rem;
+  --space-8: 4.25rem;
+  --space-9: 6rem;
+
+  --radius-sm: 0.2rem;
+  --radius-md: 0.4rem;
+  --radius-lg: 0.55rem;
+  --radius-xl: 0.85rem;
+
+  --shadow-soft: 0 8px 24px rgb(50 54 60 / 0.04);
+  --shadow-modal: 0 16px 40px rgb(50 54 60 / 0.1);
+
+  /* Tailwind 4xl */
+  --content-max: 56rem;
+  --nav-height: 3.75rem;
+  --page-gutter: clamp(1rem, 3vw, 1.5rem);
+  --icon-button-size: 1.85rem;
+  /* Nav sheet / compact header. CSS cannot use this in @media — keep 860px in queries. */
+  --bp-nav: 860px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 180ms;
+  --duration-med: 320ms;
+}

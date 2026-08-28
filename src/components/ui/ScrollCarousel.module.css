@@ -1,0 +1,49 @@
+.wrap {
+  position: relative;
+}
+
+.track {
+  scroll-behavior: smooth;
+}
+
+.fade {
+  position: absolute;
+  top: 0;
+  bottom: var(--space-2);
+  width: 2.75rem;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.fadeLeft {
+  left: 0;
+  background: linear-gradient(to right, var(--color-surface-raised), transparent);
+}
+
+.fadeRight {
+  right: 0;
+  background: linear-gradient(to left, var(--color-surface-raised), transparent);
+}
+
+.fadeVisible {
+  opacity: 1;
+}
+
+.arrow {
+  position: absolute;
+  top: 0;
+  bottom: var(--space-2);
+  z-index: 2;
+  margin: auto 0;
+  box-shadow: var(--shadow-soft);
+}
+
+.arrowLeft {
+  left: var(--space-2);
+}
+
+.arrowRight {
+  right: var(--space-2);
+}

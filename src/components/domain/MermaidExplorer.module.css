@@ -1,0 +1,27 @@
+.viewport {
+  width: 100%;
+  height: min(64vh, 36rem);
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  outline: none;
+  background: var(--color-canvas);
+}
+
+.viewportGrabbing {
+  cursor: grabbing;
+}
+
+.canvas {
+  transform-origin: 0 0;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.canvas :global(svg) {
+  display: block;
+  max-width: none;
+  height: auto;
+  background: var(--color-surface-raised);
+  border-radius: var(--radius-md);
+}

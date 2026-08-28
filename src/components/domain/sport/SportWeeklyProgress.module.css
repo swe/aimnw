@@ -1,0 +1,204 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.row {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.toggle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3);
+  text-align: left;
+  color: inherit;
+}
+
+.rowTop {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  align-items: baseline;
+}
+
+.rowMeta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+}
+
+.range {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-fg);
+}
+
+.weekCode {
+  font-size: var(--text-xs);
+  color: var(--color-fg-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.summary {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  font-size: var(--text-xs);
+  color: var(--color-fg-muted);
+}
+
+.sessionsNote {
+  font-weight: 400;
+  color: var(--color-fg-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.delta {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.delta[data-tone='up'] {
+  color: var(--color-positive);
+}
+
+.delta[data-tone='down'] {
+  color: var(--color-negative);
+}
+
+.delta[data-tone='flat'] {
+  color: var(--color-fg-subtle);
+}
+
+.chevron {
+  color: var(--color-fg-subtle);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.open .chevron {
+  transform: rotate(180deg);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.weekStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  font-size: var(--text-xs);
+  color: var(--color-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.sessions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  overflow: visible;
+}
+
+.empty {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-fg-subtle);
+}
+
+.legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--text-xs);
+  color: var(--color-fg-muted);
+}
+
+.swatch {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 0.15rem;
+  display: inline-block;
+}
+
+.swatch[data-kind='gym'] {
+  background: #c4a35a;
+}
+
+.swatch[data-kind='running'] {
+  background: #e07030;
+}
+
+.swatch[data-kind='cycling'] {
+  background: #1f9aaa;
+}
+
+.swatch[data-kind='swimming'] {
+  background: #3b6fb0;
+}
+
+.swatch[data-kind='hiking'] {
+  background: #8a7a3a;
+}
+
+.swatch[data-kind='soccer'] {
+  background: #5c4db8;
+}
+
+.swatch[data-kind='bouldering'] {
+  background: #a05a3c;
+}
+
+.swatch[data-kind='sauna'] {
+  background: #c23d6e;
+}
+
+.swatch[data-kind='cold_plunge'] {
+  background: #3d7a9e;
+}
+
+.swatch[data-kind='contrast'] {
+  background: linear-gradient(90deg, #c23d6e 0%, #c23d6e 50%, #3d7a9e 50%, #3d7a9e 100%);
+}

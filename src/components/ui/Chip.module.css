@@ -1,0 +1,51 @@
+.chip,
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--color-fg-muted);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.chip {
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.chip:hover {
+  border-color: var(--color-fg-subtle);
+  color: var(--color-fg);
+}
+
+.active {
+  font-weight: 500;
+  background: var(--color-accent-soft);
+  border-color: transparent;
+  color: var(--color-accent);
+}
+
+.active:hover {
+  color: var(--color-accent);
+  border-color: transparent;
+}
+
+.count {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.72;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

@@ -1,0 +1,144 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  margin: 0 var(--space-3) var(--space-3);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface-raised) 70%, var(--color-border-subtle));
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+  gap: var(--space-2) var(--space-3);
+}
+
+.metricsRow {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--space-3);
+  overflow-x: auto;
+}
+
+.metricsRow .metric {
+  flex: 1 1 0;
+  min-width: 3.75rem;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.metricLabel {
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.metricValue {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.notes {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-fg-muted);
+}
+
+.contrastSplit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.contrastHalf {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.contrastHalf[data-part='sauna'] {
+  background: color-mix(in srgb, #c45c3a 12%, transparent);
+}
+
+.contrastHalf[data-part='plunge'] {
+  background: color-mix(in srgb, #6a8fa8 14%, transparent);
+}
+
+.contrastLabel {
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.contrastValue {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.contrastMeta {
+  font-size: var(--text-xs);
+  color: var(--color-fg-muted);
+}
+
+.zones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.zonesTrack {
+  height: 0.65rem;
+  border-radius: 999px;
+  background: var(--color-border-subtle);
+  overflow: hidden;
+}
+
+.zonesFill {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.zoneSeg {
+  display: block;
+  height: 100%;
+  min-width: 0;
+}
+
+.prBanner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.35rem 0.55rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, #c4a35a 18%, transparent);
+  color: #8a6b2f;
+  font-size: var(--text-xs);
+}
+
+.prBanner strong {
+  font-family: var(--font-body);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.prBanner span {
+  color: var(--color-fg-muted);
+  font-weight: 400;
+}

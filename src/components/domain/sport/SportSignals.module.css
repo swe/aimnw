@@ -1,0 +1,337 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.tile {
+  --tile-accent: var(--color-accent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  min-height: 6.25rem;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  overflow: visible;
+}
+
+.tile[data-has-spark='true'] {
+  min-height: 8.5rem;
+}
+
+.tile[data-accent='cardio'] {
+  --tile-accent: #2f6b45;
+}
+
+.tile[data-accent='hrv'] {
+  --tile-accent: #c43340;
+}
+
+.tile[data-accent='sleep'] {
+  --tile-accent: #6b4f9a;
+}
+
+.tile[data-accent='vo2'] {
+  --tile-accent: #2b7cb5;
+}
+
+.tile[data-accent='weight'] {
+  --tile-accent: #2f6b45;
+}
+
+.tile[data-accent='bodyFat'] {
+  --tile-accent: #c47a2c;
+}
+
+.tile[data-accent='ffmi'] {
+  --tile-accent: #c43340;
+}
+
+.tile[data-accent='load'] {
+  --tile-accent: #2f6b45;
+}
+
+.tile[data-accent='gym'] {
+  --tile-accent: #6b4f9a;
+}
+
+.tile[data-accent='trophy'] {
+  --tile-accent: #9a7b4a;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.label {
+  min-width: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--color-fg-muted);
+}
+
+.metric {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem;
+  min-width: 0;
+  margin-top: 0.15rem;
+}
+
+.reading {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.22rem;
+  flex: 0 0 auto;
+}
+
+.value {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2.15vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.value[data-status='good'] {
+  color: var(--color-positive);
+}
+
+.value[data-status='bad'] {
+  color: var(--color-negative);
+}
+
+.unit {
+  flex-shrink: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-fg-subtle);
+  white-space: nowrap;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.3rem;
+  align-self: flex-start;
+  margin: 0.1rem 0 0;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-positive);
+  background: color-mix(in srgb, var(--color-positive) 12%, transparent);
+  max-width: 100%;
+}
+
+.badge span {
+  min-width: 0;
+}
+
+.badge[data-status='bad'] {
+  color: var(--color-negative);
+  background: color-mix(in srgb, var(--color-negative) 12%, transparent);
+}
+
+.badge[data-status='neutral'] {
+  color: var(--color-fg-muted);
+  background: color-mix(in srgb, var(--color-border-subtle) 55%, transparent);
+}
+
+.trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  flex-shrink: 0;
+  margin-left: auto;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+}
+
+.trend[data-tone='up'] {
+  color: var(--color-positive);
+}
+
+.trend[data-tone='down'] {
+  color: var(--color-negative);
+}
+
+.footnote {
+  margin: 0;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--color-fg-subtle);
+}
+
+.emptyMessage {
+  margin: 0.35rem 0 0;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-fg-muted);
+}
+
+.spark {
+  width: 100%;
+  height: 2.75rem;
+  margin-top: auto;
+  display: block;
+  overflow: visible;
+  color: var(--tile-accent);
+}
+
+.sparkArea {
+  fill: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.sparkLine {
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.goalLine {
+  stroke: color-mix(in srgb, currentColor 55%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
+}
+
+.hint {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.hintMark {
+  display: inline-grid;
+  place-items: center;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-fg-subtle);
+  font-family: var(--font-body);
+  font-size: 0.55rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: help;
+}
+
+.hint:hover .hintMark,
+.hintMark:focus-visible {
+  color: var(--color-fg);
+  border-color: var(--color-fg-muted);
+  background: var(--color-accent-soft);
+}
+
+.hintPanel {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  z-index: 5;
+  width: max-content;
+  max-width: min(16rem, calc(100vw - 2rem));
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  color: var(--color-fg-muted);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hintPanel::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  height: 0.35rem;
+}
+
+.hint:hover .hintPanel {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hintPanel {
+    top: auto;
+    bottom: calc(100% + 0.35rem);
+    z-index: 10;
+  }
+
+  .hintPanel[data-align='start'] {
+    left: 0;
+    right: auto;
+    transform: none;
+  }
+
+  .hintPanel[data-align='center'] {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+
+  .hintPanel[data-align='end'] {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+
+  .hintPanel::before {
+    bottom: auto;
+    top: 100%;
+  }
+
+  .hintOpen .hintPanel,
+  .hint:hover .hintPanel {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .value {
+    font-size: 1.2rem;
+  }
+
+  .tile {
+    min-height: 7.75rem;
+  }
+}

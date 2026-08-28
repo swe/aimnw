@@ -1,0 +1,63 @@
+.figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-border-subtle) 65%, transparent);
+  color: var(--color-fg-muted);
+}
+
+.appleMap {
+  position: relative;
+  width: 100%;
+  height: 11rem;
+  min-height: 11rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #d6e8ef;
+}
+
+/* MapKit injects .mk-map-view — force it to fill the host. */
+.appleMap :global(.mk-map-view),
+.appleMap :global(.mk-map-view > canvas),
+.appleMap :global(.mk-map-view > div) {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.figure[data-kind='running'] .route {
+  color: #e07030;
+}
+
+.figure[data-kind='cycling'] .route {
+  color: #1f9aaa;
+}
+
+.figure[data-kind='swimming'] .route {
+  color: #3b6fb0;
+}
+
+.figure[data-kind='hiking'] .route {
+  color: #8a7a3a;
+}
+
+.figure[data-kind='soccer'] .route {
+  color: #5c4db8;
+}
+
+.caption {
+  font-size: var(--text-xs);
+  color: var(--color-fg-subtle);
+}
+
+.source {
+  color: var(--color-fg-subtle);
+  opacity: 0.8;
+}
