@@ -1,7 +1,7 @@
 import rybbit from '@rybbit/js'
 
-/** Self-hosted Rybbit — site ID is public (same as the snippet `data-site-id`). */
-const ANALYTICS_HOST = 'https://stats.alleksy.com/api'
+/** Same-origin proxy → stats.alleksy.com (avoids sendBeacon CORS credentials issues). */
+const ANALYTICS_HOST = '/analytics'
 const SITE_ID = '9b0ff68cd9b8'
 
 declare global {

@@ -95,6 +95,12 @@ export default defineConfig(({ mode }) => {
           secure: false,
           rewrite: (requestPath) => requestPath.replace(/^\/media\/i/, ''),
         },
+        // First-party Rybbit proxy (sendBeacon uses credentials: include → needs same origin).
+        '/analytics': {
+          target: 'https://stats.alleksy.com',
+          changeOrigin: true,
+          rewrite: (requestPath) => requestPath.replace(/^\/analytics/, '/api'),
+        },
       },
     },
     preview: {
@@ -109,6 +115,11 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           secure: false,
           rewrite: (requestPath) => requestPath.replace(/^\/media\/i/, ''),
+        },
+        '/analytics': {
+          target: 'https://stats.alleksy.com',
+          changeOrigin: true,
+          rewrite: (requestPath) => requestPath.replace(/^\/analytics/, '/api'),
         },
       },
     },
