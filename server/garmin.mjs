@@ -2,7 +2,9 @@
  * Garmin Connect proxy — activities, HR zones, and on-demand GPS routes.
  *
  * Session: run `pnpm garmin:login` (writes .garmin-session.json).
- * Workouts only. Sleep / HRV / VO₂ stay on Oura; gym volume stays on Hevy.
+ * Hub kinds: running, cycling, swimming, hiking, soccer, bouldering, sauna,
+ * cold plunge (Contrast is sauna+plunge on the same day). Strength is HR
+ * overlay for Hevy gym rows, not its own session.
  */
 import { ttlFromEnv, withTtlCache } from './ttlCache.mjs'
 import {
@@ -28,31 +30,43 @@ const RUNNING_KEYS = new Set([
   'treadmill_running',
   'indoor_running',
   'ultra_run',
+  'ultra_running',
   'virtual_run',
+  'virtual_running',
   'track_running',
+  'street_running',
   'obstacle_run',
+  'obstacle_course_racing',
 ])
 const CYCLING_KEYS = new Set([
   'cycling',
   'biking',
   'indoor_cycling',
   'road_biking',
+  'road_cycling',
   'mountain_biking',
   'gravel_cycling',
   'virtual_ride',
+  'virtual_cycling',
   'cyclocross',
   'handcycling',
   'gravel_cycling_v2',
+  'recumbent_cycling',
+  'track_cycling',
 ])
 const HIKING_KEYS = new Set(['hiking', 'mountaineering'])
-const SOCCER_KEYS = new Set(['soccer', 'football', 'futsal', 'indoor_soccer'])
+const SOCCER_KEYS = new Set(['soccer', 'football', 'futsal', 'indoor_soccer', 'soccer_football'])
 const SWIMMING_KEYS = new Set([
   'swimming',
   'lap_swimming',
   'open_water_swimming',
   'pool_swimming',
+  'pool_swim',
 ])
 const STRENGTH_KEYS = new Set(['strength_training', 'indoor_cardio', 'cardio'])
+const BOULDERING_KEYS = new Set(['bouldering', 'indoor_climbing'])
+const SAUNA_KEYS = new Set(['sauna'])
+const COLD_PLUNGE_KEYS = new Set(['cold_plunge', 'cold_water_exposure'])
 const SKIP_KEYS = new Set([
   'walking',
   'casual_walking',
@@ -100,6 +114,28 @@ function kindForTypeKey(typeKey) {
   if (SOCCER_KEYS.has(typeKey)) return 'soccer'
   if (SWIMMING_KEYS.has(typeKey)) return 'swimming'
   if (STRENGTH_KEYS.has(typeKey)) return 'strength_training'
+  if (BOULDERING_KEYS.has(typeKey)) return 'bouldering'
+  if (SAUNA_KEYS.has(typeKey)) return 'sauna'
+  if (COLD_PLUNGE_KEYS.has(typeKey)) return 'cold_plunge'
+  return null
+}
+
+function kindFromActivityName(name) {
+  const n = String(name || '').trim().toLowerCase()
+  if (!n) return null
+  if (/\bcold\s*(plunge|immersion)|ice\s*bath\b/.test(n)) return 'cold_plunge'
+  if (/\bsauna\b/.test(n)) return 'sauna'
+  return null
+}
+
+function kindForRow(row) {
+  const typeKey = activityTypeKey(row)
+  if (SKIP_KEYS.has(typeKey)) return null
+  const mapped = kindForTypeKey(typeKey)
+  if (mapped) return mapped
+  if (typeKey === 'other' || typeKey === 'fitness' || !typeKey) {
+    return kindFromActivityName(row?.activityName)
+  }
   return null
 }
 
@@ -136,7 +172,14 @@ function hasGpsFlag(row, typeKey) {
   if (typeKey.includes('indoor') || typeKey.includes('treadmill') || typeKey === 'lap_swimming') {
     return false
   }
-  if (typeKey === 'strength_training' || typeKey === 'cardio' || typeKey === 'indoor_cardio') {
+  if (
+    typeKey === 'strength_training' ||
+    typeKey === 'cardio' ||
+    typeKey === 'indoor_cardio' ||
+    BOULDERING_KEYS.has(typeKey) ||
+    SAUNA_KEYS.has(typeKey) ||
+    COLD_PLUNGE_KEYS.has(typeKey)
+  ) {
     return false
   }
   return Boolean(
@@ -195,8 +238,7 @@ function applyDistanceDetail(detail, kind, distanceM, durationSec) {
 
 export function mapGarminActivityToTraining(row, hrZones = null) {
   const typeKey = activityTypeKey(row)
-  if (SKIP_KEYS.has(typeKey)) return null
-  const kind = kindForTypeKey(typeKey)
+  const kind = kindForRow(row)
   if (!kind) {
     logUnknownType(typeKey)
     return null
@@ -217,10 +259,19 @@ export function mapGarminActivityToTraining(row, hrZones = null) {
   if (!id) return null
 
   const detail = {}
-  if (distanceM != null && distanceM > 0 && kind !== 'soccer') {
+  if (
+    distanceM != null &&
+    distanceM > 0 &&
+    kind !== 'soccer' &&
+    kind !== 'bouldering' &&
+    kind !== 'sauna' &&
+    kind !== 'cold_plunge'
+  ) {
     applyDistanceDetail(detail, kind, distanceM, durationSec)
   }
-  if (elevationM != null && elevationM > 0) detail.elevationGainM = Math.round(elevationM)
+  if (elevationM != null && elevationM > 0 && kind !== 'sauna' && kind !== 'cold_plunge' && kind !== 'bouldering') {
+    detail.elevationGainM = Math.round(elevationM)
+  }
   if (kind === 'swimming') {
     detail.outdoor = typeKey === 'open_water_swimming' || typeKey === 'swimming'
   }
@@ -265,6 +316,9 @@ function titleFor(kind, typeKey) {
   if (kind === 'hiking') return 'Hike'
   if (kind === 'soccer') return 'Football / Soccer'
   if (kind === 'swimming') return typeKey.includes('open') ? 'Open Water Swim' : 'Swim'
+  if (kind === 'bouldering') return 'Bouldering'
+  if (kind === 'sauna') return 'Sauna'
+  if (kind === 'cold_plunge') return 'Cold plunge'
   return 'Strength'
 }
 
@@ -317,11 +371,9 @@ export async function fetchGarminWorkoutsSummary(signal) {
   const { startDate, endDate } = dateWindow()
   const raw = await fetchActivityPages(startDate, endDate, signal)
   const relevant = raw.filter((row) => {
-    const typeKey = activityTypeKey(row)
-    if (SKIP_KEYS.has(typeKey)) return false
-    const kind = kindForTypeKey(typeKey)
+    const kind = kindForRow(row)
     if (!kind) {
-      logUnknownType(typeKey)
+      logUnknownType(activityTypeKey(row))
       return false
     }
     return true
@@ -497,7 +549,7 @@ export async function handleGarminRequest(method = 'GET', pathname = '/api/garmi
       body: {
         configured,
         message: configured
-          ? 'Garmin Connect workouts (runs, rides, hikes, football, swims, gym HR) are available.'
+          ? 'Garmin Connect workouts (runs, rides, hikes, football, swims, bouldering, sauna, gym HR) are available.'
           : canLogin
             ? 'Garmin credentials are in .env. Loading a session — if MFA is on, run `pnpm garmin:login`.'
             : LOGIN_HELP,

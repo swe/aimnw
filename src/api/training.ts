@@ -231,6 +231,7 @@ function sessionDetail(activity: TrainingActivity, zones: SportHrZoneSeconds): S
       maxGrade: null,
       sends: null,
       notes: activity.notes,
+      zones: zoneList,
     }
   }
   if (activity.kind === 'sauna') {

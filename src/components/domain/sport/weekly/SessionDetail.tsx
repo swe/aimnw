@@ -254,6 +254,7 @@ export function SessionDetail({ session }: Props) {
               <Metric label="Calories" value={`${detail.calories} cal`} />
             ) : null}
           </div>
+          {detail.zones ? <ZonesBar zones={detail.zones} /> : null}
           {detail.notes ? <p className={styles.notes}>{detail.notes}</p> : null}
         </>
       ) : null}

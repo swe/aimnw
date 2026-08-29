@@ -1,5 +1,5 @@
 /**
- * Oura Ring API proxy — runs, cycling, and hikes as TrainingActivity rows.
+ * Oura Ring API proxy — same hub kinds as Garmin, used to fill holes.
  *
  * Env (server-only):
  *   OURA_ACCESS_TOKEN — bearer token (personal or OAuth access token)
@@ -10,6 +10,7 @@
  *   - Oura has no GPS; workout docs never include map / route geometry.
  *   - Strava→Oura syncs often omit distance; we enrich avg/max HR from the
  *     heartrate time series when present.
+ *   - Gym volume stays on Hevy. Walks and other auto-detect noise are skipped.
  */
 import { loadDotEnv, optionalServerEnv } from './env.mjs'
 import { ttlFromEnv, withTtlCache } from './ttlCache.mjs'
@@ -273,11 +274,39 @@ function isSoccerActivity(activity) {
   return key === 'soccer' || key === 'football' || key === 'futsal'
 }
 
-function kindForActivity(activity) {
+function isSwimActivity(activity) {
+  const key = String(activity || '').toLowerCase()
+  return (
+    key === 'swimming' ||
+    key === 'lap_swimming' ||
+    key === 'open_water_swimming' ||
+    key === 'pool_swimming' ||
+    key === 'pool_swim'
+  )
+}
+
+function isBoulderActivity(activity) {
+  const key = String(activity || '').toLowerCase()
+  return key === 'bouldering' || key === 'climbing' || key === 'indoor_climbing'
+}
+
+function isSaunaActivity(activity) {
+  return /\bsauna\b/.test(String(activity || '').toLowerCase())
+}
+
+function isPlungeActivity(activity) {
+  return /\bcold\s*(plunge|immersion)|ice\s*bath\b/.test(String(activity || '').toLowerCase())
+}
+
+function kindForActivity(activity, label) {
   if (isRunActivity(activity)) return 'running'
   if (isCycleActivity(activity)) return 'cycling'
   if (isHikeActivity(activity)) return 'hiking'
   if (isSoccerActivity(activity)) return 'soccer'
+  if (isSwimActivity(activity)) return 'swimming'
+  if (isBoulderActivity(activity)) return 'bouldering'
+  if (isSaunaActivity(activity) || isSaunaActivity(label)) return 'sauna'
+  if (isPlungeActivity(activity) || isPlungeActivity(label)) return 'cold_plunge'
   return null
 }
 
@@ -299,6 +328,13 @@ function titleFor(workout, kind) {
   }
   if (kind === 'hiking') return 'Hike'
   if (kind === 'soccer') return 'Football / Soccer'
+  if (kind === 'swimming') {
+    const activity = String(workout.activity || '').toLowerCase()
+    return activity.includes('open') ? 'Open Water Swim' : 'Swim'
+  }
+  if (kind === 'bouldering') return 'Bouldering'
+  if (kind === 'sauna') return 'Sauna'
+  if (kind === 'cold_plunge') return 'Cold plunge'
   return 'Workout'
 }
 
@@ -338,16 +374,18 @@ function applyDistanceDetail(detail, kind, distanceM, durationSec) {
     detail.speedKmH = Math.round((distanceM / 1000 / (durationSec / 3600)) * 10) / 10
   } else if ((kind === 'cycling' || kind === 'hiking') && durationSec > 0) {
     detail.speedKmH = Math.round((distanceM / 1000 / (durationSec / 3600)) * 10) / 10
+  } else if (kind === 'swimming' && durationSec > 0) {
+    detail.paceSecPer100m = Math.round(durationSec / (distanceM / 100))
   }
 }
 
 /**
  * Map an Oura workout into the TrainingActivity shape used by the sport hub.
- * Only runs, cycling, hikes, and football — walks and other auto-detect noise are skipped.
- * Returns null when the workout should be skipped.
+ * Same kinds as Garmin (runs, rides, swims, hikes, football, bouldering, sauna).
+ * Walks and other auto-detect noise are skipped. Returns null to skip.
  */
 export function mapOuraWorkoutToTrainingActivity(workout, hrStats = null) {
-  const kind = kindForActivity(workout?.activity)
+  const kind = kindForActivity(workout?.activity, workout?.label)
   if (!kind) return null
 
   const startedAt = toUtcIso(workout.start_datetime)
@@ -372,9 +410,17 @@ export function mapOuraWorkoutToTrainingActivity(workout, hrStats = null) {
 
   const date = isoDay(workout.day) || startedAt.slice(0, 10)
   const calories = Number(workout.calories)
+  const keepDistance =
+    kind !== 'soccer' &&
+    kind !== 'bouldering' &&
+    kind !== 'sauna' &&
+    kind !== 'cold_plunge'
   const detail = {}
-  if (hasDistance) {
+  if (hasDistance && keepDistance) {
     applyDistanceDetail(detail, kind, distanceM, durationSec)
+  }
+  if (kind === 'swimming') {
+    detail.outdoor = String(workout.activity || '').toLowerCase().includes('open')
   }
 
   const id = String(workout.id || `oura-${startedAt}`)
@@ -382,7 +428,9 @@ export function mapOuraWorkoutToTrainingActivity(workout, hrStats = null) {
   const maxHrBpm = hrStats?.maxHrBpm
   const notes = [
     intensityNote(workout.intensity),
-    !hasGpsDistance && hasDistance ? 'Distance estimated (Oura omitted GPS)' : null,
+    !hasGpsDistance && hasDistance && keepDistance
+      ? 'Distance estimated (Oura omitted GPS)'
+      : null,
   ]
     .filter(Boolean)
     .join(' · ')
@@ -631,7 +679,7 @@ export async function handleOuraRequest(method, pathname = '/api/oura/workouts')
         fitnessAgeAvailable: heartHealth.available,
         needsReauth,
         message: configured
-          ? `Oura workouts (runs, cycling, hikes) are available. ${fitnessAgeMessage}`
+          ? `Oura workouts (runs, rides, swims, hikes, football, bouldering, sauna) are available. ${fitnessAgeMessage}`
           : 'Add OURA_ACCESS_TOKEN (or OAuth refresh credentials) to enable Oura workouts.',
       },
     }

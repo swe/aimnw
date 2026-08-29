@@ -712,6 +712,7 @@ export type SportBoulderingDetail = {
   maxGrade: string | null
   sends: number | null
   notes: string | null
+  zones: SportHrZoneSeconds | null
 }
 
 export type SportSaunaDetail = {

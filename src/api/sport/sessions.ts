@@ -44,7 +44,8 @@ export function sessionZones(session: SportWeekSession): SportHrZoneSeconds | nu
     detail.kind === 'cycling' ||
     detail.kind === 'swimming' ||
     detail.kind === 'hiking' ||
-    detail.kind === 'soccer'
+    detail.kind === 'soccer' ||
+    detail.kind === 'bouldering'
       ? detail.zones
       : null
   if (!zones) return null
