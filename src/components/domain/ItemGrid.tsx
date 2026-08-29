@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { proxiedMediaUrl } from '@/lib/mediaUrl'
 import styles from './ItemGrid.module.css'
 
 export type ItemGridDensity = 'catalog' | 'covers' | 'gallery'
@@ -56,7 +57,12 @@ export function ItemCardButton({
       aria-label={mute ? title : undefined}
     >
       {imageUrl ? (
-        <img className={mediaClass} src={imageUrl} alt={imageAlt ?? ''} loading="lazy" />
+        <img
+          className={mediaClass}
+          src={proxiedMediaUrl(imageUrl) ?? imageUrl}
+          alt={imageAlt ?? ''}
+          loading="lazy"
+        />
       ) : (
         <div className={emptyClass} aria-hidden="true">
           {fallback ?? null}

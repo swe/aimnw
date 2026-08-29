@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { ScrollCarousel } from '@/components/ui'
+import { proxiedMediaUrlRequired } from '@/lib/mediaUrl'
 import type { GoalItem } from '@/types'
 import styles from './GoalCard.module.css'
 
@@ -12,7 +13,9 @@ function GoalCardFace({
   const hasImage = Boolean(goal.image_url)
   return (
     <>
-      {hasImage ? <img src={goal.image_url} alt="" className={styles.img} loading="lazy" /> : null}
+      {hasImage ? (
+        <img src={proxiedMediaUrlRequired(goal.image_url)} alt="" className={styles.img} loading="lazy" />
+      ) : null}
       <span className={styles.title}>{goal.title}</span>
     </>
   )

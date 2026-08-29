@@ -88,6 +88,13 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           rewrite: (requestPath) => requestPath.replace(/^\/immich/, ''),
         },
+        // i.alleksy.com has an expired cert — Vite must not verify TLS.
+        '/media/i': {
+          target: 'https://i.alleksy.com',
+          changeOrigin: true,
+          secure: false,
+          rewrite: (requestPath) => requestPath.replace(/^\/media\/i/, ''),
+        },
       },
     },
     preview: {
@@ -96,6 +103,12 @@ export default defineConfig(({ mode }) => {
           target: 'https://m.alleksy.com',
           changeOrigin: true,
           rewrite: (requestPath) => requestPath.replace(/^\/immich/, ''),
+        },
+        '/media/i': {
+          target: 'https://i.alleksy.com',
+          changeOrigin: true,
+          secure: false,
+          rewrite: (requestPath) => requestPath.replace(/^\/media\/i/, ''),
         },
       },
     },

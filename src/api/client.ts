@@ -1,3 +1,5 @@
+import { proxiedMediaUrl } from '@/lib/mediaUrl'
+
 export class ApiError extends Error {
   status: number
 
@@ -22,6 +24,24 @@ type RequestOptions = {
   signal?: AbortSignal
 }
 
+/** Walk JSON and send any `i.alleksy.com` URLs through `/media/i` (expired origin cert). */
+function rewriteMediaUrls<T>(value: T): T {
+  if (typeof value === 'string') {
+    return (proxiedMediaUrl(value) ?? value) as T
+  }
+  if (Array.isArray(value)) {
+    return value.map((item) => rewriteMediaUrls(item)) as T
+  }
+  if (value && typeof value === 'object') {
+    const out: Record<string, unknown> = {}
+    for (const [key, nested] of Object.entries(value as Record<string, unknown>)) {
+      out[key] = rewriteMediaUrls(nested)
+    }
+    return out as T
+  }
+  return value
+}
+
 export async function apiGet<T>(baseUrl: string, path = '', options: RequestOptions = {}): Promise<T> {
   if (!baseUrl) {
     throw new ApiError('API base URL is not configured', 500)
@@ -38,7 +58,7 @@ export async function apiGet<T>(baseUrl: string, path = '', options: RequestOpti
     throw new ApiError(`Request failed: ${response.status}`, response.status)
   }
 
-  return (await response.json()) as T
+  return rewriteMediaUrls((await response.json()) as T)
 }
 
 export function requireEnv(value: string | undefined, name: string): string {

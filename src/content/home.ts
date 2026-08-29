@@ -27,7 +27,7 @@ export const home = {
   offline: [
     {
       label: 'Résumé',
-      href: 'https://i.alleksy.com/docs/work/resume_ivan-aleksandrov.pdf',
+      href: '/media/i/docs/work/resume_ivan-aleksandrov.pdf',
     },
     { label: 'Viewfinder', to: '/viewfinder' },
     { label: 'Strava', href: 'https://www.strava.com/athletes/10659571' },

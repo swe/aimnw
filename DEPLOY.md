@@ -342,7 +342,8 @@ Caddy obtains and renews certificates itself.
 
 Open the site over HTTPS and check:
 
-- Home loads; fonts and `https://stats.alleksy.com/api/script.js` are not blocked
+- Home loads; fonts load; Network shows `POST https://stats.alleksy.com/api/track` (Rybbit via `@rybbit/js`)
+- Goal images from `i.alleksy.com` load via `/media/i/...` (expired origin cert is ignored on the server)
 - `/map` — Apple MapKit pins (token fetch + domain allowlist)
 - `/sport` — Hevy numbers; Garmin sessions if you copied the session file; Oura sleep if configured
 - Expand a run/ride — GPS overlay (Garmin route endpoint)

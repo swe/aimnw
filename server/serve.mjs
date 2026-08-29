@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { handleApiRequest, loadDotEnv, writeApiResult } from './api.mjs'
+import { proxyInsecureMedia } from './insecureMedia.mjs'
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const distDir = path.join(rootDir, 'dist')
@@ -74,6 +75,10 @@ async function handleRequest(req, res) {
 
   if (pathname === '/immich' || pathname.startsWith('/immich/')) {
     await proxyImmich(req, res, pathname, url.search)
+    return
+  }
+
+  if (await proxyInsecureMedia(req, res, pathname, url.search, SECURITY_HEADERS)) {
     return
   }
 

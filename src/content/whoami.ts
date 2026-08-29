@@ -29,7 +29,7 @@ export const whoami = {
       links: [
         {
           label: 'Resume',
-          href: 'https://i.alleksy.com/docs/work/resume_ivan-aleksandrov.pdf',
+          href: '/media/i/docs/work/resume_ivan-aleksandrov.pdf',
         },
         { label: 'Viewfinder', to: '/viewfinder' },
         { label: 'Experiments', to: '/experiments', hidden: true },
