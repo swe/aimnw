@@ -3,7 +3,7 @@
  * Session lives server-side in `.garmin-session.json` (`pnpm garmin:login`).
  */
 import { proxyFailure, proxyGet } from './client'
-import type { SportRouteMap, TrainingActivity } from '@/types'
+import type { HealthBiometricDay, SportRouteMap, TrainingActivity } from '@/types'
 import { garminPointsToRouteMap } from '@/lib/sportRouteMap'
 
 export type GarminWorkoutsSummary = {
@@ -12,6 +12,8 @@ export type GarminWorkoutsSummary = {
   endDate: string
   activityCount: number
   activities: TrainingActivity[]
+  /** VO₂ max readings from Garmin maxmet / training status (sparse). */
+  biometrics: HealthBiometricDay[]
 }
 
 export type GarminRoutePoint = {

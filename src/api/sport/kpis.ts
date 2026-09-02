@@ -265,7 +265,7 @@ export function buildKpis(
       goalLine: goals.vo2Max,
       showDelta: priorVo2 != null,
       hint:
-        'Latest Oura VO₂ max estimate. Trend compares to the prior reading.',
+        'Latest VO₂ max (Oura when available for that day, otherwise Garmin). Trend compares to the prior reading.',
     }),
     kpiTile({
       id: 'weight',

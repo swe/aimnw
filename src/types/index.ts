@@ -676,9 +676,15 @@ export type SportHikingDetail = {
 }
 
 export type SportSoccerPitchSpot = {
-  /** 0–100 across the pitch (own goal left → attack right). */
+  /**
+   * 0–100 across the pitch (own goal left → attack right).
+   * Auto heat defaults to the attacking half (left/center attacker).
+   */
   x: number
-  /** 0–100 down the pitch (left wing near 0 when attacking right). */
+  /**
+   * 0–100 down the pitch (left wing near 0 / top of image).
+   * Auto heat defaults to the top half (attacking left).
+   */
   y: number
   /** Blob radius as % of pitch width. */
   r: number

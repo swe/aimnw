@@ -9,7 +9,12 @@ import { buildWeekly } from './weekly'
 import { buildLongRuns, buildZoneWeeks, buildZoneYearSummary } from './zones'
 import { getGarminWorkouts, type GarminWorkoutsSummary } from '@/api/garmin'
 import { getHevySummary } from '@/api/hevy'
-import { getOuraWorkouts, mergeOuraIntoTraining, type OuraWorkoutsSummary } from '@/api/oura'
+import {
+  getOuraWorkouts,
+  mergeOuraBiometrics,
+  mergeOuraIntoTraining,
+  type OuraWorkoutsSummary,
+} from '@/api/oura'
 import { activitiesToHealth, trainingToHealth } from '@/api/training'
 import type {
   HevyBodyMeasurement,
@@ -120,12 +125,13 @@ export async function getSportHub(signal?: AbortSignal): Promise<SportHubData> {
   const oura = ouraResult.data
   const garmin = garminResult.data
   const training = trainingFromSources(oura, garmin)
-  const biometrics = oura?.biometrics ?? []
+  // Garmin VO₂ first, then Oura overlays per day (Oura wins when both have a reading).
+  const biometrics = mergeOuraBiometrics(garmin?.biometrics ?? [], oura?.biometrics ?? [])
   const chronologicalAge = oura?.chronologicalAge ?? null
   const mergedTrends = activitiesToHealth(
     training.activities,
     oura?.sleep ?? [],
-    oura?.biometrics ?? [],
+    biometrics,
   )
   const health = trainingToHealth(training, biometrics)
   const hubSessions = yearHubSessions(hevy, training)

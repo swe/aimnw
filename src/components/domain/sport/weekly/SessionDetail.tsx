@@ -10,6 +10,7 @@ import {
   formatPace,
   formatVolume,
 } from '@/lib/sportFormat'
+import { useSoccerPitchHeat } from '@/hooks/useSoccerPitchHeat'
 import { useGarminRouteMap, useGpxRouteMap } from '@/hooks/useRouteMap'
 import type { SportHrZoneSeconds, SportSessionDetail, SportWeekSession } from '@/types'
 
@@ -99,7 +100,14 @@ export function SessionDetail({ session }: Props) {
   const { detail } = session
   const garminId = garminIdOf(detail)
   const mapLabel = mapLabelOf(session)
-  const garminMap = useGarminRouteMap(garminId, mapLabel)
+  const soccerGarminId =
+    detail.kind === 'soccer' && !detail.pitchHeat ? garminId : null
+  const autoPitchHeat = useSoccerPitchHeat(soccerGarminId)
+  const pitchHeat = detail.kind === 'soccer' ? detail.pitchHeat ?? autoPitchHeat : null
+  const garminMap = useGarminRouteMap(
+    detail.kind === 'soccer' ? null : garminId,
+    mapLabel,
+  )
   const gpxPath =
     detail.kind === 'running' && !detail.map && !garminMap ? detail.gpxPath : null
   const gpxMap = useGpxRouteMap(gpxPath, mapLabel)
@@ -226,11 +234,7 @@ export function SessionDetail({ session }: Props) {
 
       {detail.kind === 'soccer' ? (
         <>
-          {detail.pitchHeat ? (
-            <SoccerPitchHeatmap heat={detail.pitchHeat} />
-          ) : routeMap ? (
-            <RouteMap map={routeMap} kind="soccer" />
-          ) : null}
+          {pitchHeat ? <SoccerPitchHeatmap heat={pitchHeat} /> : null}
           <div className={styles.metrics}>
             {detail.calories != null ? (
               <Metric label="Calories" value={`${detail.calories} cal`} />

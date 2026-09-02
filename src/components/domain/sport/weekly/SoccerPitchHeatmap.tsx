@@ -6,8 +6,9 @@ type Props = {
 }
 
 /**
- * Pitch photo + soft occupancy blobs. Coordinates are % of the field
- * (own goal left → attack right; left wing near the top edge).
+ * Pitch photo + soft occupancy blobs.
+ * Coords: own goal left → attack right; left wing at the top.
+ * Auto GPS heat defaults to attacking left (top-right).
  */
 export function SoccerPitchHeatmap({ heat }: Props) {
   const spots = [...heat.spots].sort((a, b) => a.intensity - b.intensity)

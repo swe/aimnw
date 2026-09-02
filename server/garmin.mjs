@@ -1,10 +1,12 @@
 /**
- * Garmin Connect proxy — activities, HR zones, and on-demand GPS routes.
+ * Garmin Connect proxy — activities, HR zones, VO₂ max, and on-demand GPS routes.
  *
  * Session: run `pnpm garmin:login` (writes .garmin-session.json).
  * Hub kinds: running, cycling, swimming, hiking, soccer, bouldering, sauna,
  * cold plunge (Contrast is sauna+plunge on the same day). Strength is HR
  * overlay for Hevy gym rows, not its own session.
+ * VO₂ max comes from maxmet (daily) with training-status fallback; the sport
+ * hub prefers Oura on the same calendar day when both exist.
  */
 import { ttlFromEnv, withTtlCache } from './ttlCache.mjs'
 import {
@@ -367,9 +369,68 @@ function keepLongestSoccerOnDates(activities, dates) {
   return drop.size ? activities.filter((row) => !drop.has(row.id)) : activities
 }
 
+/** Map a Garmin maxmet / training-status generic VO₂ block into a biometric day. */
+function vo2DayFromGeneric(generic) {
+  const day = civilDate(generic?.calendarDate)
+  const vo2 = num(generic?.vo2MaxPreciseValue ?? generic?.vo2MaxValue)
+  if (!day || vo2 == null || vo2 <= 0) return null
+  return {
+    date: day,
+    hrvMs: null,
+    vo2Max: Math.round(vo2 * 10) / 10,
+    fitnessAge: null,
+  }
+}
+
+function buildBiometricsFromMaxmet(rows) {
+  const byDay = new Map()
+  for (const row of rows || []) {
+    const day = vo2DayFromGeneric(row?.generic)
+    if (!day) continue
+    byDay.set(day.date, day)
+  }
+  return [...byDay.values()].sort((a, b) => b.date.localeCompare(a.date))
+}
+
+/**
+ * Daily maxmet is sparse (only days Garmin recomputed VO₂). When the range is
+ * empty, training-status still carries the most recent estimate.
+ */
+async function fetchGarminVo2Biometrics(startDate, endDate, signal) {
+  let rows = []
+  try {
+    const payload = await connectGet(
+      `/metrics-service/metrics/maxmet/daily/${startDate}/${endDate}`,
+      {},
+      signal,
+    )
+    rows = Array.isArray(payload) ? payload : []
+  } catch {
+    rows = []
+  }
+
+  const fromDaily = buildBiometricsFromMaxmet(rows)
+  if (fromDaily.length) return fromDaily
+
+  try {
+    const status = await connectGet(
+      `/metrics-service/metrics/trainingstatus/aggregated/${endDate}`,
+      {},
+      signal,
+    )
+    const day = vo2DayFromGeneric(status?.mostRecentVO2Max?.generic)
+    return day ? [day] : []
+  } catch {
+    return []
+  }
+}
+
 export async function fetchGarminWorkoutsSummary(signal) {
   const { startDate, endDate } = dateWindow()
-  const raw = await fetchActivityPages(startDate, endDate, signal)
+  const [raw, biometrics] = await Promise.all([
+    fetchActivityPages(startDate, endDate, signal),
+    fetchGarminVo2Biometrics(startDate, endDate, signal),
+  ])
   const relevant = raw.filter((row) => {
     const kind = kindForRow(row)
     if (!kind) {
@@ -397,6 +458,7 @@ export async function fetchGarminWorkoutsSummary(signal) {
     endDate,
     activityCount: activities.length,
     activities,
+    biometrics,
   }
 }
 
@@ -549,7 +611,7 @@ export async function handleGarminRequest(method = 'GET', pathname = '/api/garmi
       body: {
         configured,
         message: configured
-          ? 'Garmin Connect workouts (runs, rides, hikes, football, swims, bouldering, sauna, gym HR) are available.'
+          ? 'Garmin Connect workouts and VO₂ max are available (runs, rides, hikes, football, swims, bouldering, sauna, gym HR).'
           : canLogin
             ? 'Garmin credentials are in .env. Loading a session — if MFA is on, run `pnpm garmin:login`.'
             : LOGIN_HELP,
